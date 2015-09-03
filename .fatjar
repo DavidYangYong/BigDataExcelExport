@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Mon Nov 25 09:04:48 CST 2013
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=test.jar
+manifest.mergeall=true
+manifest.mainclass=math.page.KnapsackTest
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<po|david-modules-excel>~org/;<po|david-modules-excel>~commons-collections-3.2.1.jar;<po|david-modules-excel>~commons-compress-1.6.jar;<po|david-modules-excel>~commons-david.1.1.jar;<po|david-modules-excel>~commons-io.jar;<po|david-modules-excel>~commons-lang-2.4.jar;<po|david-modules-excel>~commons-logging.jar;<po|david-modules-excel>~dom4j-1.6.1.jar;<po|david-modules-excel>~jxl-2.6.6.jar;<po|david-modules-excel>~log4j-1.2.14.jar;<po|david-modules-excel>~poi-3.9-20121203.jar;<po|david-modules-excel>~poi-ooxml-3.9-20121203.jar;<po|david-modules-excel>~poi-ooxml-schemas-3.9-20121203.jar;<po|david-modules-excel>~poi-scratchpad-3.9-20121203.jar;<po|david-modules-excel>~xmlbeans-2.4.0.jar;<jar|commons-david.1.1.jar>;<jar|commons-compress-1.6.jar>
+includes=
