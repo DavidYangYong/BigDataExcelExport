@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="src/commons-compress-1.6.jar"/>
 	<classpathentry kind="lib" path="src/commons-io.jar"/>
 	<classpathentry kind="lib" path="src/jxl-2.6.6.jar"/>
+	<classpathentry kind="lib" path="src/joda-time-1.6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

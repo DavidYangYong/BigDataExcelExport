@@ -51,7 +51,7 @@ import org.fl.modules.excel.jxl.JxlImportExcelFactory;
  * 
  * @version
  */
-public class Test {
+public class ImportTest {
 	
 	public static void main(String[] args) throws IOException, BiffException {
 		File file = new File("d:\\test.xls");
