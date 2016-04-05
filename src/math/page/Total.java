@@ -40,14 +40,13 @@ package math.page;
  * 修改人：David.Yang
  * 修改时间：2013-11-24 下午04:26:33
  * 修改备注：
- * 
+ *
  * @version
  */
 public class Total implements Comparable<Total> {
 	private long no;
 	private int total;
 	
-	@Override
 	public int compareTo(Total o) {
 		
 		return this.getTotal().compareTo(o.getTotal());
