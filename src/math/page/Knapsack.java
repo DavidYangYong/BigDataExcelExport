@@ -40,7 +40,7 @@ package math.page;
  * 修改人：David.Yang
  * 修改时间：2013-11-22 上午11:25:40
  * 修改备注：
- * 
+ *
  * @version
  */
 public class Knapsack implements Comparable<Knapsack> {
@@ -63,7 +63,6 @@ public class Knapsack implements Comparable<Knapsack> {
 	 * (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	@Override
 	public int compareTo(Knapsack o) {
 		
 		return this.getWeight().compareTo(o.getWeight());
