@@ -42,14 +42,14 @@ import org.fl.modules.utils.RowSelect;
 /**
  * 项目名称：david-modules-excel 类名称：ExportExcelMultiSupport 类描述： 创建人：David.Yang
  * 创建时间：2013-11-20 上午09:30:41 修改人：David.Yang 修改时间：2013-11-20 上午09:30:41 修改备注：
- * 
+ *
  * @version
- *          synchronized (excelMultiSupport) {
+ * 			synchronized (excelMultiSupport) {
  *          try {
  *          excelMultiSupport.run(Long.valueOf(num).intValue(),
  *          new ISXSSFWorkBook() {
  * @Override
- *           public void doExecuteCreateTitle(Sheet sheet) {
+ * 			public void doExecuteCreateTitle(Sheet sheet) {
  *           Row contenRow = sheet.createRow(0);
  *           Cell contentCell = contenRow.createCell(0);
  *           contentCell.setCellValue("包件编码");
@@ -101,7 +101,7 @@ import org.fl.modules.utils.RowSelect;
  *           sheet.setColumnWidth(15, 4000);
  *           }
  * @Override
- *           public void doExecute(Row contenRow, Object object) {
+ * 			public void doExecute(Row contenRow, Object object) {
  *           WorkHourpItem workHourpItem = (WorkHourpItem) object;
  *           Cell contentCell = contenRow.createCell(0);
  *           contentCell
@@ -170,7 +170,7 @@ import org.fl.modules.utils.RowSelect;
  *           }
  *           }, new ISxssfWorkBookList() {
  * @Override
- *           public List doExecuteList(RowSelect rowSelect) {
+ * 			public List doExecuteList(RowSelect rowSelect) {
  *           List list = new ArrayList();
  *           try {
  *           list = workHourpItemService
@@ -207,7 +207,6 @@ public class ExportExcelMultiSupport {
 		 * (non-Javadoc)
 		 * @see java.lang.Runnable#run()
 		 */
-		@Override
 		public void run() {
 			if (mTheThread != Thread.currentThread()) {
 				throw new RuntimeException();
@@ -242,7 +241,7 @@ public class ExportExcelMultiSupport {
 	}
 	
 	private static Logger logger = Logger
-	        .getLogger(ExportExcelMultiSupport.class);
+			.getLogger(ExportExcelMultiSupport.class);
 	private boolean isMulti;
 	
 	private SXSSFWorkBookOperation sxssfWorkBookOperation;
@@ -264,30 +263,30 @@ public class ExportExcelMultiSupport {
 	
 	/***************************************************************************
 	 * @param int
-	 *        count
+	 *            count
 	 * @param ISXSSFWorkBook
 	 *            sIsxssfWorkBook
 	 * @param ISxssfWorkBookList
 	 *            sxssfWorkBookList
 	 */
-	public boolean run(final int count, final ISXSSFWorkBook sIsxssfWorkBook,
-	        final ISxssfWorkBookList sxssfWorkBookList) throws IOException,
-	        RuntimeException {
+	public boolean run(final int count, final ISXSSFWorkBook sIsxssfWorkBook, final ISxssfWorkBookList sxssfWorkBookList)
+			throws IOException, RuntimeException {
 		logger.info("查询数据开始.....");
 		long start = System.currentTimeMillis();
-		logger.info(DateUtils
-		        .formatDateTimeDateByPattern("yyyy-MM-dd HH:mm:ss"));
+		logger.info(
+				DateUtils.formatDateTimeDateByPattern("yyyy-MM-dd HH:mm:ss"));
 		sxssfWorkBookOperation = new SXSSFWorkBookOperation();
 		sxssfWorkBookOperation.setSxIsxssfWorkBook(sIsxssfWorkBook);
 		boolean isRun = false;
 		if (isMulti) {
 			ExecutorService executorService = Executors
-			        .newSingleThreadExecutor();
+					.newSingleThreadExecutor();
 			final CountDownLatchTemplete countDownLatchTemplete = new CountDownLatchTemplete();
 			
 			boolean isCompleted = false;
-			countDownLatchTemplete.countDownLatch(Long.valueOf(count)
-			        .intValue(), sxssfWorkBookOperation, sxssfWorkBookList);
+			countDownLatchTemplete.countDownLatch(
+					Long.valueOf(count).intValue(), sxssfWorkBookOperation,
+					sxssfWorkBookList);
 			
 			isRun = countDownLatchTemplete.isClose();
 			// 等待子线程结束，再继续执行下面的代码
@@ -296,8 +295,8 @@ public class ExportExcelMultiSupport {
 			sxssfWorkBookOperation.setSheet_num(1);
 			int pageSize = PageSizeUtils.pageSize;
 			RowSelect rowSelect = new RowSelect(1, pageSize, count);
-			sxssfWorkBookOperation.excute(sIsxssfWorkBook, sxssfWorkBookList
-			        .doExecuteList(rowSelect));
+			sxssfWorkBookOperation.excute(sIsxssfWorkBook,
+					sxssfWorkBookList.doExecuteList(rowSelect));
 			isRun = true;
 		}
 		
