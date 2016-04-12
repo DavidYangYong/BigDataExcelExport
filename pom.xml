@@ -70,11 +70,11 @@
 			<artifactId>joda-time</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.6.12</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>net.sourceforge.jexcelapi</groupId> -->
+<!-- 			<artifactId>jxl</artifactId> -->
+<!-- 			<version>2.6.12</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>com.david</groupId>
 			<artifactId>commons-david</artifactId>

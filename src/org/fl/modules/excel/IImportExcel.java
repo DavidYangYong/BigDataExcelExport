@@ -25,6 +25,7 @@
  */
 package org.fl.modules.excel;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -42,7 +43,7 @@ import java.util.Collection;
  * 修改人：David.Yang
  * 修改时间：2013-11-13 上午09:13:18
  * 修改备注：
- * 
+ *
  * @version
  */
 public interface IImportExcel extends IImportExcelStream {
@@ -59,6 +60,8 @@ public interface IImportExcel extends IImportExcelStream {
 	
 	/**
 	 * 验证excel数据
+	 * 
+	 * @throws IOException
 	 */
-	public ExcelReturn validateExcelData();
+	public ExcelReturn validateExcelData() throws IOException;
 }
