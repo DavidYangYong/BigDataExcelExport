@@ -10,71 +10,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * # * AbstractJxlImportExcel.java Create on 2013-11-13 上午09:18:55
- * # * project qy-modules-excel
- * # * Copyright 2013 by .
- * #
- */
-/**
- * 文件名：AbstractJxlImportExcel.java
- * 版本信息：
- * 日期：2013-11-13
- * Copyright 足下 Corporation 2013
- * 版权所有
- */
 package org.fl.modules.excel;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import jxl.read.biff.BiffException;
+import org.apache.commons.lang.BooleanUtils;
 
-/**
+/***
  * @author David.Yang
  * @version 1.0
  *          CreateDate：2013-11-13 上午09:18:55
  *          类说明
  *          操作excel的模板类，使用IImportExcel接口进行操作
  */
-/**
- * 项目名称：qy-modules-excel
- * 类名称：AbstractJxlImportExcel
- * 类描述：
- * 创建人：David.Yang
- * 创建时间：2013-11-13 上午09:18:55
- * 修改人：David.Yang
- * 修改时间：2013-11-13 上午09:18:55
- * 修改备注：
- * 
+/***
+ * 项目名称：qy-modules-excel*类名称：AbstractJxlImportExcel*类描述：*创建人：David.Yang*创建时间：
+ * 2013-11-13 上午09:18:55*修改人：David.Yang*修改时间：2013-11-13 上午09:18:55*修改备注：**
+ *
  * @version
  */
-public abstract class AbstractImportExcelSupport extends
-        AbstractImportExcelStream {
+public abstract class AbstractImportExcelSupport
+		extends AbstractImportExcelStream {
 	
 	private IImportExcel importExcel;
 	
 	/**
 	 * 创建一个新的实例 AbstractJxlImportExcel.
-	 * 
+	 *
 	 * @param file
 	 */
 	public AbstractImportExcelSupport(File file) {
 		super(file);
 		// TODO Auto-generated constructor stub
+		boolean booleanUtils = BooleanUtils.isFalse(false);
 	}
 	
 	/**
 	 * 进行导入excel数据
 	 */
-	public abstract IImportExcel createImportExcel() throws IOException,
-	        BiffException;
+	public abstract IImportExcel createImportExcel() throws IOException;
 	
 	/**
 	 * 进行导入excel数据的模板方法
 	 */
-	private void importExcelData() throws IOException, BiffException {
+	private void importExcelData() throws IOException {
 		boolean validate = false;
 		IImportExcel importExcel = createImportExcel();
 		if (importExcel != null) {
@@ -84,7 +65,7 @@ public abstract class AbstractImportExcelSupport extends
 					validate = excelReturn.isRight();
 					if (validate) {
 						Collection imCollection = excelReturn
-						        .getRightCollection();
+								.getRightCollection();
 						importExcel.importExcelData(imCollection);
 					}
 				}
@@ -101,7 +82,12 @@ public abstract class AbstractImportExcelSupport extends
 	 */
 	private ExcelReturn validateExcelData(IImportExcel importExcel) {
 		ExcelReturn excelReturn = new ExcelReturn();
-		excelReturn = importExcel.validateExcelData();
+		try {
+			excelReturn = importExcel.validateExcelData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return excelReturn;
 		
 	}

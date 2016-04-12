@@ -28,11 +28,6 @@ package org.fl.modules.test.excel;
 import java.io.File;
 import java.io.IOException;
 
-import jxl.read.biff.BiffException;
-
-import org.fl.modules.excel.IImportExcel;
-import org.fl.modules.excel.jxl.JxlImportExcelFactory;
-
 /**
  * @author David.Yang
  * @version 1.0
@@ -48,22 +43,23 @@ import org.fl.modules.excel.jxl.JxlImportExcelFactory;
  * 修改人：David.Yang
  * 修改时间：2013-11-13 下午05:11:50
  * 修改备注：
- * 
+ *
  * @version
  */
 public class ImportTest {
 	
-	public static void main(String[] args) throws IOException, BiffException {
-		File file = new File("d:\\test.xls");
-		JxlImportExcelFactory jxlImportExcelFactory = new JxlImportExcelFactory(
-		        file);
-		IImportExcel importExcel = jxlImportExcelFactory.createImportExcel();
-		long start = System.currentTimeMillis();
-		System.out.println("start:" + start);
-		importExcel.validateExcelData();
-		long end = System.currentTimeMillis();
-		System.out.println("end:" + end);
-		System.out.println(end - start);
-		System.out.println("Took : " + ((end - start) / 1000));
+	public static void main(String[] args) throws IOException {
+		File file = new File("/Users/david/Desktop/test.xlsx");
+		// JxlImportExcelFactory jxlImportExcelFactory = new
+		// JxlImportExcelFactory(
+		// file);
+		// IImportExcel importExcel = jxlImportExcelFactory.createImportExcel();
+		// long start = System.currentTimeMillis();
+		// System.out.println("start:" + start);
+		// importExcel.validateExcelData();
+		// long end = System.currentTimeMillis();
+		// System.out.println("end:" + end);
+		// System.out.println(end - start);
+		// System.out.println("Took : " + ((end - start) / 1000));
 	}
 }
