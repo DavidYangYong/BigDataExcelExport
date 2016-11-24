@@ -23,7 +23,6 @@ public class ExportTest {
 		excelMultiSupport.setMulti(false);
 		excelMultiSupport.run(1000, new ISXSSFWorkBook() {
 			
-			@Override
 			public void doExecuteCreateTitle(Sheet sheet) {
 				Row contenRow = sheet.createRow(0);
 				
@@ -33,7 +32,6 @@ public class ExportTest {
 				
 			}
 			
-			@Override
 			public void doExecute(Row contenRow, Object object) {
 				Person person = (Person) object;
 				Cell contentCell = contenRow.createCell(0);
@@ -42,7 +40,6 @@ public class ExportTest {
 			}
 		}, new ISxssfWorkBookList() {
 			
-			@Override
 			public List doExecuteList(RowSelect rowSelect) {
 				List list = new ArrayList();
 				try {

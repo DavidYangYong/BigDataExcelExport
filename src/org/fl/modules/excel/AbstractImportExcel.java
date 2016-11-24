@@ -53,7 +53,7 @@ public abstract class AbstractImportExcel implements IImportExcel {
 	 * (non-Javadoc)
 	 * @see org.fl.modules.excel.IImportExcel#getExcelReturn()
 	 */
-	@Override
+	
 	public ExcelReturn getExcelReturn() {
 		
 		return null;
@@ -67,7 +67,7 @@ public abstract class AbstractImportExcel implements IImportExcel {
 	 * (non-Javadoc)
 	 * @see org.fl.modules.excel.IImportExcelStream#getImportFile()
 	 */
-	@Override
+	
 	public File getImportFile() {
 		
 		return file;
