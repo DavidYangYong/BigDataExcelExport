@@ -59,26 +59,26 @@ class CountDownLatchTemplete {
 	 * Logger for this class
 	 */
 	private static final Logger logger = Logger
-	        .getLogger(CountDownLatchTemplete.class);
+			.getLogger(CountDownLatchTemplete.class);
 	
 	private boolean isClose;
 	
 	/***
 	 * 多线程主方法
 	 * 
-	 * @param int totalRows
+	 * @param int
+	 *            totalRows
 	 * @param SXSSFWorkBookOpTemplete
 	 *            sxssfWorkBookOperation
 	 * @param ISxssfWorkBookList
 	 *            sxssfWorkBookList
 	 */
 	
-	public void countDownLatch(int totalRows,
-	        final SXSSFWorkBookOperation sxssfWorkBookOperation,
-	        ISxssfWorkBookList sxssfWorkBookList) throws IOException,
-	        NullPointerException, RuntimeException {
+	public void countDownLatch(int totalRows, final SXSSFWorkBookOperation sxssfWorkBookOperation, ISxssfWorkBookList sxssfWorkBookList)
+			throws IOException, NullPointerException, RuntimeException {
 		if (sxssfWorkBookOperation == null) {
-			throw new NullPointerException("sxssfWorkBookOperation is not null");
+			throw new NullPointerException(
+					"sxssfWorkBookOperation is not null");
 		}
 		int pageSize = PageSizeUtils.pageSize;
 		if (sxssfWorkBookOperation.getPageSize() == 0) {
@@ -86,15 +86,15 @@ class CountDownLatchTemplete {
 		}
 		sxssfWorkBookOperation.setTotalRows(totalRows);
 		int pageNo = (totalRows + (pageSize - 1)) / pageSize; // 页数
-		if (pageNo > PageSizeUtils.pageNo) {
-			throw new RuntimeException("实际页数" + pageNo + "大于最大页数:"
-			        + PageSizeUtils.pageNo);
-		}
+		// if (pageNo > PageSizeUtils.pageNo) {
+		// throw new RuntimeException("实际页数" + pageNo + "大于最大页数:"
+		// + PageSizeUtils.pageNo);
+		// }
 		sxssfWorkBookOperation.setPageNo(pageNo);
 		if (logger.isDebugEnabled()) {
-			logger
-			        .debug("countDownLatch(int, SXSSFWorkBookUtil, ISxssfWorkBookList) - CountDownLatchDemo1:"
-			                + new Date().toString());
+			logger.debug(
+					"countDownLatch(int, SXSSFWorkBookUtil, ISxssfWorkBookList) - CountDownLatchDemo1:"
+							+ new Date().toString());
 		}
 		
 		CountDownLatch doneCdl = new CountDownLatch(pageNo);// 连接的总数为 pageNo 闸门
@@ -105,8 +105,8 @@ class CountDownLatchTemplete {
 			RowSelect rowSelect = new RowSelect(i, pageSize, totalRows);
 			
 			ThreadTemplete threadTemplete = new ThreadTemplete(doneCdl,
-			        sxssfWorkBookOperation, rowSelect, sxssfWorkBookList,
-			        sxssfWorkBookOperation.getPageSize());
+					sxssfWorkBookOperation, rowSelect, sxssfWorkBookList,
+					sxssfWorkBookOperation.getPageSize());
 			exe.execute(threadTemplete);
 		}
 		
@@ -124,23 +124,22 @@ class CountDownLatchTemplete {
 			} while (loop);
 			isClose = true;
 		} catch (InterruptedException e) {
-			logger
-			        .error(
-			                "countDownLatch(int, SXSSFWorkBookUtil, ISxssfWorkBookList)",
-			                e);
+			logger.error(
+					"countDownLatch(int, SXSSFWorkBookUtil, ISxssfWorkBookList)",
+					e);
 		}
 		
 		// 记录所有连接线程的结束时间
 		long end = System.currentTimeMillis();
 		if (logger.isDebugEnabled()) {
-			logger
-			        .debug("countDownLatch(int, SXSSFWorkBookUtil, ISxssfWorkBookList) - The task takes time(ms): "
-			                + ((end - start) / 1000));
+			logger.debug(
+					"countDownLatch(int, SXSSFWorkBookUtil, ISxssfWorkBookList) - The task takes time(ms): "
+							+ ((end - start) / 1000));
 		}
 		if (logger.isDebugEnabled()) {
-			logger
-			        .debug("countDownLatch(int, SXSSFWorkBookUtil, ISxssfWorkBookList) - CountDownLatchDemo1:"
-			                + new Date().toString());
+			logger.debug(
+					"countDownLatch(int, SXSSFWorkBookUtil, ISxssfWorkBookList) - CountDownLatchDemo1:"
+							+ new Date().toString());
 		}
 		
 	}
