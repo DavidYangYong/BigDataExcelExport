@@ -43,7 +43,7 @@ import java.io.File;
  * 修改时间：2013-11-13 上午09:50:17
  * 修改备注：
  * 实现ImportExcel接口的抽象类
- * 
+ *
  * @version
  */
 public abstract class AbstractImportExcel implements IImportExcel {
@@ -53,7 +53,7 @@ public abstract class AbstractImportExcel implements IImportExcel {
 	 * (non-Javadoc)
 	 * @see org.fl.modules.excel.IImportExcel#getExcelReturn()
 	 */
-	@Override
+	
 	public ExcelReturn getExcelReturn() {
 		
 		return null;
@@ -67,7 +67,7 @@ public abstract class AbstractImportExcel implements IImportExcel {
 	 * (non-Javadoc)
 	 * @see org.fl.modules.excel.IImportExcelStream#getImportFile()
 	 */
-	@Override
+	
 	public File getImportFile() {
 		
 		return file;

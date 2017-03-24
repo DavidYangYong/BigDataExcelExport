@@ -52,7 +52,7 @@ public class PoiImportExcel extends AbstractImportExcel
 	 * @see
 	 * org.fl.modules.excel.IImportExcel#importExcelData(java.util.Collection)
 	 */
-	@Override
+	
 	public void importExcelData(Collection collection) {
 	}
 	
@@ -64,7 +64,6 @@ public class PoiImportExcel extends AbstractImportExcel
 	 * (non-Javadoc)
 	 * @see org.fl.modules.excel.IImportExcel#validateExcelData()
 	 */
-	@Override
 	public ExcelReturn validateExcelData() throws IOException {
 		synchronized (workbook) {
 			Sheet sheet = workbook.getSheetAt(0);

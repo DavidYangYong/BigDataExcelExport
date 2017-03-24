@@ -28,6 +28,9 @@ package org.fl.modules.test.excel;
 import java.io.File;
 import java.io.IOException;
 
+import org.fl.modules.excel.IImportExcel;
+import org.fl.modules.excel.poi.importExcel.PoiImportExcelFactory;
+
 /**
  * @author David.Yang
  * @version 1.0
@@ -50,6 +53,16 @@ public class ImportTest {
 	
 	public static void main(String[] args) throws IOException {
 		File file = new File("/Users/david/Desktop/test.xlsx");
+		PoiImportExcelFactory poiImportExcelFactory = new PoiImportExcelFactory(
+				file);
+		IImportExcel importExcel = poiImportExcelFactory.createImportExcel();
+		long start = System.currentTimeMillis();
+		System.out.println("start:" + start);
+		importExcel.validateExcelData();
+		long end = System.currentTimeMillis();
+		System.out.println("end:" + end);
+		System.out.println(end - start);
+		System.out.println("Took : " + ((end - start) / 1000));
 		// JxlImportExcelFactory jxlImportExcelFactory = new
 		// JxlImportExcelFactory(
 		// file);

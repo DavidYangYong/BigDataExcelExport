@@ -72,7 +72,7 @@ public class ImportValidatePredicate implements Predicate, Serializable {
 	/***
 	 * 单元格验证规则定义
 	 */
-	@Override
+	
 	public boolean evaluate(Object obj) {
 		
 		boolean b = true;
@@ -91,7 +91,7 @@ public class ImportValidatePredicate implements Predicate, Serializable {
 					for (int i = 0; i < rules.length; i++) {
 						Rule ruleTemp = rules[i];
 						evaluate(value, ruleTemp,
-						        importValidateRuledateRuleTemp);
+								importValidateRuledateRuleTemp);
 					}
 				}
 				break;
@@ -116,8 +116,7 @@ public class ImportValidatePredicate implements Predicate, Serializable {
 		
 	}
 	
-	public boolean evaluate(String value, Rule rule,
-	        ImportValidateRule importValidateRuledateRuleTemp) {
+	public boolean evaluate(String value, Rule rule, ImportValidateRule importValidateRuledateRuleTemp) {
 		
 		boolean b = true;
 		

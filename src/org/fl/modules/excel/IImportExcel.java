@@ -60,7 +60,7 @@ public interface IImportExcel extends IImportExcelStream {
 	
 	/**
 	 * 验证excel数据
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public ExcelReturn validateExcelData() throws IOException;

@@ -66,8 +66,8 @@ class ThreadTemplete implements Runnable {
 	private SXSSFWorkBookOperation sxssfWorkBookOperation;
 	
 	public ThreadTemplete(CountDownLatch doneCdl,
-	        SXSSFWorkBookOperation sxssfWorkBookOperation, RowSelect rowSelect,
-	        ISxssfWorkBookList sxssfWorkBookList, int pageSize) {
+			SXSSFWorkBookOperation sxssfWorkBookOperation, RowSelect rowSelect,
+			ISxssfWorkBookList sxssfWorkBookList, int pageSize) {
 		this.doneCdl = doneCdl;
 		this.sxssfWorkBookOperation = sxssfWorkBookOperation;
 		this.rowSelect = rowSelect;
@@ -75,8 +75,7 @@ class ThreadTemplete implements Runnable {
 		this.pageSize = pageSize;
 	}
 	
-	public List getList(RowSelect rowSelect,
-	        ISxssfWorkBookList sxssfWorkBookList) {
+	public List getList(RowSelect rowSelect, ISxssfWorkBookList sxssfWorkBookList) {
 		if (sxssfWorkBookList != null) {
 			return sxssfWorkBookList.doExecuteList(rowSelect);
 		}
@@ -84,12 +83,11 @@ class ThreadTemplete implements Runnable {
 		
 	}
 	
-	@Override
 	public void run() {
 		try {
 			if (logger.isDebugEnabled()) {
 				logger.debug("run() - " + Thread.currentThread().getName()
-				        + " has been working!!!!");
+						+ " has been working!!!!");
 			}
 			doneCdl.countDown();
 			// 此处需要代码清单一的那些连接操作
@@ -98,12 +96,12 @@ class ThreadTemplete implements Runnable {
 			if (list == null || list.isEmpty()) {
 				Thread.currentThread().interrupt();
 			}
-			sxssfWorkBookOperation.excute(pageSize, sxssfWorkBookOperation
-			        .getSxIsxssfWorkBook(), list);
+			sxssfWorkBookOperation.excute(pageSize,
+					sxssfWorkBookOperation.getSxIsxssfWorkBook(), list);
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("run() - " + Thread.currentThread().getName()
-				        + " has been working end !!!!");
+						+ " has been working end !!!!");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
