@@ -26,11 +26,8 @@
 package org.fl.modules.excel.poi.exportExcel.multi;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
-import org.biz.app.util.DateUtils;
 import org.fl.modules.excel.poi.exportExcel.ISXSSFWorkBook;
 import org.fl.modules.excel.poi.exportExcel.ISxssfWorkBookList;
 import org.fl.modules.utils.RowSelect;
@@ -199,10 +196,10 @@ import org.fl.modules.utils.RowSelect;
  *           }
  */
 public class ExportExcelMultiSupport {
-	
+
 	class ExecutorServiceRun implements Runnable {
 		private volatile Thread mTheThread = null;
-		
+
 		/*
 		 * (non-Javadoc)
 		 * @see java.lang.Runnable#run()
@@ -214,53 +211,55 @@ public class ExportExcelMultiSupport {
 			while (!Thread.interrupted() && mTheThread != null) {// 如果标志位为null，不再继续。
 				try {
 					Thread.sleep(1000);
-				} catch (InterruptedException e) {
+				}
+				catch (InterruptedException e) {
 					e.printStackTrace();
 					Thread.currentThread().interrupt(); // mTheThread可能已经为空了，因此用Thread.currentThread()替代之
 				}
 			}
 		}
-		
+
 		public void start() {
 			mTheThread = new Thread(this);
 			mTheThread.start();
 		}
-		
+
 		public void stop() {
 			if (mTheThread != null) {
 				mTheThread.interrupt();
 				try {
 					mTheThread.join(); // 等待线程彻底结束
-				} catch (InterruptedException e) {
+				}
+				catch (InterruptedException e) {
 					e.printStackTrace();
 					mTheThread.interrupt();
 				}
 			}
 		}
-		
+
 	}
-	
-	private static Logger logger = Logger
-			.getLogger(ExportExcelMultiSupport.class);
+
+	private static Logger logger = Logger.getLogger(ExportExcelMultiSupport.class);
+
 	private boolean isMulti;
-	
+
 	private SXSSFWorkBookOperation sxssfWorkBookOperation;
-	
+
 	/**
 	 * 创建一个新的实例 ExportExcelMultiSupport.
 	 */
 	public ExportExcelMultiSupport() {
 		isMulti = true;
 	}
-	
+
 	public SXSSFWorkBookOperation getSxssfWorkBookOperation() {
 		return sxssfWorkBookOperation;
 	}
-	
+
 	public boolean isMulti() {
 		return isMulti;
 	}
-	
+
 	/***************************************************************************
 	 * @param int
 	 *            count
@@ -269,37 +268,33 @@ public class ExportExcelMultiSupport {
 	 * @param ISxssfWorkBookList
 	 *            sxssfWorkBookList
 	 */
-	public boolean run(final int count, final ISXSSFWorkBook sIsxssfWorkBook, final ISxssfWorkBookList sxssfWorkBookList)
-			throws IOException, RuntimeException {
+	public boolean run(final int count, final ISXSSFWorkBook sIsxssfWorkBook,
+			final ISxssfWorkBookList sxssfWorkBookList) throws IOException, RuntimeException {
 		logger.info("查询数据开始.....");
 		long start = System.currentTimeMillis();
-		logger.info(
-				DateUtils.formatDateTimeDateByPattern("yyyy-MM-dd HH:mm:ss"));
 		sxssfWorkBookOperation = new SXSSFWorkBookOperation();
 		sxssfWorkBookOperation.setSxIsxssfWorkBook(sIsxssfWorkBook);
 		boolean isRun = false;
 		if (isMulti) {
-			ExecutorService executorService = Executors
-					.newSingleThreadExecutor();
+			//			ExecutorService executorService = Executors.newSingleThreadExecutor();
 			final CountDownLatchTemplete countDownLatchTemplete = new CountDownLatchTemplete();
-			
-			boolean isCompleted = false;
-			countDownLatchTemplete.countDownLatch(
-					Long.valueOf(count).intValue(), sxssfWorkBookOperation,
+
+			//			boolean isCompleted = false;
+			countDownLatchTemplete.countDownLatch(Long.valueOf(count).intValue(), sxssfWorkBookOperation,
 					sxssfWorkBookList);
-			
+
 			isRun = countDownLatchTemplete.isClose();
 			// 等待子线程结束，再继续执行下面的代码
-		} else {
+		}
+		else {
 			sxssfWorkBookOperation.setTotalRows(count);
 			sxssfWorkBookOperation.setSheet_num(1);
 			int pageSize = PageSizeUtils.pageSize;
 			RowSelect rowSelect = new RowSelect(1, pageSize, count);
-			sxssfWorkBookOperation.excute(sIsxssfWorkBook,
-					sxssfWorkBookList.doExecuteList(rowSelect));
+			sxssfWorkBookOperation.excute(sIsxssfWorkBook, sxssfWorkBookList.doExecuteList(rowSelect));
 			isRun = true;
 		}
-		
+
 		long end = System.currentTimeMillis();
 		long temp = (end - start) / 1000;
 		logger.info("耗时:" + temp + "秒");
@@ -307,7 +302,7 @@ public class ExportExcelMultiSupport {
 		logger.info("查询数据结束.....");
 		return isRun;
 	}
-	
+
 	public void setMulti(boolean isMulti) {
 		this.isMulti = isMulti;
 	}
