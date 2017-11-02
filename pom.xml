@@ -2,9 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>david-modules-excel</groupId>
+	<groupId>com.fy</groupId>
 	<artifactId>david-modules-excel</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -27,6 +27,15 @@
 			<!-- 					<target>1.5</target> -->
 			<!-- 				</configuration> -->
 			<!-- 			</plugin> -->
+			<!--打包jar包-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<updateReleaseInfo>true</updateReleaseInfo>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -93,4 +102,10 @@
 		</dependency>
 
 	</dependencies>
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<url>http://192.168.111.144:9081/nexus/content/repositories/thirdparty/</url>
+		</repository>
+	</distributionManagement>
 </project>

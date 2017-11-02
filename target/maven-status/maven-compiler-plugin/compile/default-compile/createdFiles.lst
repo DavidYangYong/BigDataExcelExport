@@ -1,4 +1,3 @@
-org/fl/modules/excel/jxl/JxlImportExcelFactory.class
 org/fl/modules/excel/AbstractImportExcelSupport.class
 org/fl/modules/excel/poi/exportExcel/multi/ExportExcelMultiSupport.class
 org/fl/modules/excel/rule/ImportValidateRule.class
@@ -17,13 +16,11 @@ org/fl/modules/excel/rule/ImportValidatePredicate.class
 org/fl/modules/test/excel/ExportTest.class
 org/fl/modules/excel/poi/exportExcel/ISxssfWorkBookList.class
 math/page/Knapsack.class
-org/fl/modules/excel/jxl/JxlImportExcelRule.class
 org/fl/modules/excel/poi/exportExcel/multi/ThreadTemplete.class
 org/fl/modules/excel/IImportExcel.class
 org/fl/modules/utils/RowSelect.class
 math/page/KnapsackTest.class
 math/page/KnapsackProblem.class
-org/fl/modules/excel/jxl/JxlImportExcel.class
 org/fl/modules/excel/poi/exportExcel/ISXSSFWorkBook.class
 org/fl/modules/test/excel/PredicateChainExample.class
 org/fl/Test.class

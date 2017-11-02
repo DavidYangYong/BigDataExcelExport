@@ -283,6 +283,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			return true;
 		}
 		catch (NumberFormatException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
