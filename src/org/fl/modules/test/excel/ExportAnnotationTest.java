@@ -4,48 +4,37 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.fl.modules.excel.poi.exportExcel.ISXSSFWorkBook;
 import org.fl.modules.excel.poi.exportExcel.ISxssfWorkBookList;
+import org.fl.modules.excel.poi.exportExcel.impl.SXSSFWorkBookImpl;
 import org.fl.modules.excel.poi.exportExcel.multi.ExportExcelMultiSupport;
 import org.fl.modules.utils.RowSelect;
 
-public class ExportTest {
+public class ExportAnnotationTest {
 	
 	public static void main(String[] args)
 			throws IOException, RuntimeException {
 		ExportExcelMultiSupport excelMultiSupport = new ExportExcelMultiSupport();
 		excelMultiSupport.setMulti(false);
-		excelMultiSupport.run(1000, new ISXSSFWorkBook() {
-			
-			public void doExecuteCreateTitle(Sheet sheet) {
-				Row contenRow = sheet.createRow(0);
-				
-				Cell contentCell = contenRow.createCell(0);
-				contentCell.setCellValue("包件编码");
-				sheet.setColumnWidth(0, 4000);
-				
-			}
-			
-			public void doExecute(Row contenRow, Object object) {
-				Person person = (Person) object;
-				Cell contentCell = contenRow.createCell(0);
-				contentCell.setCellValue(person.getName());
-				
-			}
-		}, new ISxssfWorkBookList() {
-			
+		ISXSSFWorkBook isxssfWorkBook=new SXSSFWorkBookImpl(Person.class);
+		excelMultiSupport.run(1000,isxssfWorkBook,new ISxssfWorkBookList() {
+
 			public List doExecuteList(RowSelect rowSelect) {
 				List list = new ArrayList();
 				try {
 					Person person = new Person();
 					person.setId(1);
-					person.setName("personTest");
+					person.setName("personTest1");
+					list.add(person);
+					 person = new Person();
+					person.setId(2);
+					person.setName("personTest2");
 					list.add(person);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -54,9 +43,9 @@ public class ExportTest {
 				return list;
 			}
 		});
-		ExportTest test = new ExportTest();
+		ExportAnnotationTest test = new ExportAnnotationTest();
 		String rootPath = test.getClass().getResource("/").getPath();
-		String source = rootPath + "test.xls";
+		String source = rootPath + "test1.xlsx";
 		File file = new File(source);
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		// test
