@@ -29,11 +29,11 @@ public class ExportAnnotationTest {
 				List list = new ArrayList();
 				try {
 					Person person = new Person();
-					person.setId(new BigDecimal(1));
+					person.setId(1);
 					person.setName("personTest1");
 					list.add(person);
 					 person = new Person();
-					person.setId(new BigDecimal(2));
+					person.setId(2);
 					person.setName("personTest2");
 					list.add(person);
 				} catch (Exception e) {
@@ -45,7 +45,7 @@ public class ExportAnnotationTest {
 		});
 		ExportAnnotationTest test = new ExportAnnotationTest();
 		String rootPath = test.getClass().getResource("/").getPath();
-		String source = rootPath + "test.xlsx";
+		String source = rootPath + "test1.xlsx";
 		File file = new File(source);
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		// test

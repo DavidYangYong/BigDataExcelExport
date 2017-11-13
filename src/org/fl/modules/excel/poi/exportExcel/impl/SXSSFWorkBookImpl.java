@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -22,6 +21,7 @@ import org.fl.modules.excel.poi.exportExcel.entity.ExcelExportEntity;
 import org.fl.modules.utils.ExcelPublicUtil;
 
 public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
+
 	private List<ExcelExportEntity> excelParams;
 
 	public SXSSFWorkBookImpl(Class<?> pojoClass) {
@@ -35,8 +35,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		}
 		try {
 			getAllExcelField(targetId, fileds, excelParams, pojoClass, null);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -48,9 +47,17 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			ExcelExportEntity excelExportEntity = excelParams.get(i);
 			Cell contentCell = contenRow.createCell(i);
 			try {
-				contentCell.setCellValue(getValueStr(getCellValue(excelExportEntity, object)));
-			}
-			catch (Exception e) {
+				Object tempValue = getCellValue(excelExportEntity, object);
+				if (tempValue instanceof Integer) {
+					contentCell.setCellValue((Integer) tempValue);
+				} else if (tempValue instanceof Double) {
+					contentCell.setCellValue((Double) tempValue);
+				} else {
+					contentCell.setCellValue(getValueStr(tempValue));
+
+				}
+
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -65,15 +72,14 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 
 	private static Object getCellValue(ExcelExportEntity entity, Object obj) throws Exception {
 		Object value = entity.getGetMethods() != null ? getFieldBySomeMethod(entity.getGetMethods(), obj)
-				: entity.getGetMethod().invoke(obj, new Object[] {});
+				: entity.getGetMethod().invoke(obj, new Object[]{});
 		// step 1 判断是不是日期,需不需要格式化
 		if (StringUtils.isNotEmpty(entity.getExportFormat())) {
 			Date temp = null;
 			if (value instanceof String) {
 				SimpleDateFormat format = new SimpleDateFormat(entity.getDatabaseFormat());
 				temp = format.parse(value.toString());
-			}
-			else if (value instanceof Date) {
+			} else if (value instanceof Date) {
 				temp = (Date) value;
 			}
 			if (temp != null) {
@@ -86,11 +92,6 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 
 	/**
 	 * 多个反射获取值
-	 * 
-	 * @param list
-	 * @param t
-	 * @return
-	 * @throws Exception
 	 */
 	private static Object getFieldBySomeMethod(List<Method> list, Object t) throws Exception {
 		for (Method m : list) {
@@ -98,7 +99,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 				t = "";
 				break;
 			}
-			t = m.invoke(t, new Object[] {});
+			t = m.invoke(t, new Object[]{});
 		}
 		return t;
 	}
@@ -137,8 +138,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 				excelEntity.setGetMethod(ExcelPublicUtil.getMethod(field.getName(), pojoClass));
 				excelEntity.setList(list);
 				excelParams.add(excelEntity);
-			}
-			else if (ExcelPublicUtil.isJavaClass(field)) {
+			} else if (ExcelPublicUtil.isJavaClass(field)) {
 				Excel excel = field.getAnnotation(Excel.class);
 				excelEntity = new ExcelExportEntity();
 				excelEntity.setType(excel.exportType());
@@ -150,8 +150,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 					excelEntity.setGetMethods(newMethods);
 				}
 				excelParams.add(excelEntity);
-			}
-			else {
+			} else {
 				List<Method> newMethods = new ArrayList<Method>();
 				if (getMethods != null) {
 					newMethods.addAll(getMethods);
@@ -191,8 +190,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 					excelEntity.setGetMethods(newMethods);
 				}
 				list.add(excelEntity);
-			}
-			else {
+			} else {
 				List<Method> newMethods = new ArrayList<Method>();
 				if (getMethods != null) {
 					newMethods.addAll(getMethods);
@@ -229,17 +227,13 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			StringBuffer getConvertMethodName = new StringBuffer("convertGet");
 			getConvertMethodName.append(fieldname.substring(0, 1).toUpperCase());
 			getConvertMethodName.append(fieldname.substring(1));
-			Method getConvertMethod = pojoClass.getMethod(getConvertMethodName.toString(), new Class[] {});
+			Method getConvertMethod = pojoClass.getMethod(getConvertMethodName.toString(), new Class[]{});
 			excelEntity.setGetMethod(getConvertMethod);
 		}
 	}
 
 	/**
 	 * 判断在这个单元格显示的名称
-	 * 
-	 * @param exportName
-	 * @param targetId
-	 * @return
 	 */
 	private static String getExcelName(String exportName, String targetId) {
 		if (exportName.indexOf(",") < 0) {
@@ -256,10 +250,6 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 
 	/**
 	 * 获取这个字段的顺序
-	 * 
-	 * @param orderNum
-	 * @param targetId
-	 * @return
 	 */
 	private static int getCellOrder(String orderNum, String targetId) {
 		if (isInteger(orderNum) || targetId == null) {
@@ -281,8 +271,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		try {
 			Integer.parseInt(value);
 			return true;
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return false;
 		}

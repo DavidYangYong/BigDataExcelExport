@@ -44,6 +44,7 @@ public class ExportTest {
 				List list = new ArrayList();
 				try {
 					Person person = new Person();
+					person.setId(1);
 					person.setName("personTest");
 					list.add(person);
 				} catch (Exception e) {

@@ -5,16 +5,16 @@ import org.fl.modules.excel.poi.annotation.Excel;
 
 public class Person {
 
-	public BigDecimal getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(BigDecimal id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	@Excel(exportName = "编号")
-	private BigDecimal id;
+	private Integer id;
 	@Excel(exportName = "名称", orderNum = "1")
 	private String name;
 
