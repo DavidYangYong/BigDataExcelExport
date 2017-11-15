@@ -29,12 +29,13 @@ public class ExportAnnotationTest {
 				List list = new ArrayList();
 				try {
 					Person person = new Person();
-					person.setId(1);
-					person.setName("personTest1");
+					//person.setId(0);
+				//	person.setName("personTest1");
 					list.add(person);
 					 person = new Person();
-					person.setId(2);
-					person.setName("personTest2");
+					//person.setId(2);
+				//	person.setName("personTest2");
+			//		person.setMoney(5.00);
 					list.add(person);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

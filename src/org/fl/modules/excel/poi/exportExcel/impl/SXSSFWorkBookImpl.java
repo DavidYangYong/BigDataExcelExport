@@ -9,7 +9,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.fl.modules.excel.poi.annotation.Excel;
@@ -42,7 +44,9 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		sortAllParams(excelParams);
 	}
 
-	public void doExecute(Row contenRow, Object object) {
+	public void doExecute(Row contenRow, Object object,CellStyle cellStyle) {
+
+
 		for (int i = 0; i < excelParams.size(); i++) {
 			ExcelExportEntity excelExportEntity = excelParams.get(i);
 			Cell contentCell = contenRow.createCell(i);
@@ -52,6 +56,8 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 					contentCell.setCellValue((Integer) tempValue);
 				} else if (tempValue instanceof Double) {
 					contentCell.setCellValue((Double) tempValue);
+					cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+					contentCell.setCellStyle(cellStyle);
 				} else {
 					contentCell.setCellValue(getValueStr(tempValue));
 
@@ -284,8 +290,12 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			ExcelExportEntity entity = excelParams.get(i);
 			contentCell = contenRow.createCell(i);
 			contentCell.setCellValue(entity.getName());
-			sheet.setColumnWidth(i, entity.getWidth() * 300);//根据注解上设置的宽度进行设置
-			//			sheet.autoSizeColumn(i);//不能设置自适应，原因未知，只能在实体对象的注解上进行设置宽度
+			if(entity!=null&&entity.getWidth()==0){
+				sheet.setColumnWidth(i, 10 * 2*256);//默认10个中文字符
+			}else{
+				sheet.setColumnWidth(i, entity.getWidth() * 2*256);//根据注解上设置的宽度进行设置
+			}
+
 		}
 	}
 }

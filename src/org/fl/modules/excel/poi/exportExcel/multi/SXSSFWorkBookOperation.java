@@ -29,11 +29,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.compress.archivers.zip.Zip64Mode;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
@@ -139,13 +140,14 @@ public class SXSSFWorkBookOperation {
 			sh = wb.createSheet();
 			
 			sxsWorkBook.doExecuteCreateTitle(sh);
-			
+			CellStyle cellStyle = wb.createCellStyle();
+
 			// 每个SHEET有rowCount ROW
 			for (int rownum = 0; rownum < rowCount; rownum++) {
 				Row row = sh.createRow(rownum + 1);
 				
 				Object object = list.get(rownum);
-				sxsWorkBook.doExecute(row, object);
+				sxsWorkBook.doExecute(row, object,cellStyle);
 				
 				// 每当行数达到设置的值就刷新数据到硬盘,以清理内存
 				if (rownum % rowaccess == 0) {
