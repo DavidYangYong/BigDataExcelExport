@@ -34,9 +34,9 @@ public class ExportAnnotationTest {
 				//	person.setName("personTest1");
 					list.add(person);
 					 person = new Person();
-					//person.setId(2);
-				//	person.setName("personTest2");
-			//		person.setMoney(5.00);
+					person.setId(2);
+					person.setName("personTest2");
+					person.setMoney(50000.96);
 					list.add(person);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

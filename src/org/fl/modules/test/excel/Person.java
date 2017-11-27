@@ -26,7 +26,7 @@ public class Person {
 		this.money = money;
 	}
 
-	@Excel(exportName = "金额", orderNum = "2")
+	@Excel(exportName = "金额", orderNum = "2",exportOtherFormat = "#,##0.00")
 
 	private Double money;
 

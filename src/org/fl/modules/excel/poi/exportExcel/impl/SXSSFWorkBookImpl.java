@@ -3,6 +3,7 @@ package org.fl.modules.excel.poi.exportExcel.impl;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,8 +45,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		sortAllParams(excelParams);
 	}
 
-	public void doExecute(Row contenRow, Object object,CellStyle cellStyle) {
-
+	public void doExecute(Row contenRow, Object object, CellStyle cellStyle) {
 
 		for (int i = 0; i < excelParams.size(); i++) {
 			ExcelExportEntity excelExportEntity = excelParams.get(i);
@@ -56,7 +56,20 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 					contentCell.setCellValue((Integer) tempValue);
 				} else if (tempValue instanceof Double) {
 					contentCell.setCellValue((Double) tempValue);
-					cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
+						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
+					} else{
+						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+					}
+					contentCell.setCellStyle(cellStyle);
+				}else if(tempValue instanceof BigDecimal){
+					double doubleVal = ((BigDecimal) tempValue).doubleValue();
+					contentCell.setCellValue(doubleVal);
+					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
+						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
+					} else{
+						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+					}
 					contentCell.setCellStyle(cellStyle);
 				} else {
 					contentCell.setCellValue(getValueStr(tempValue));
@@ -227,6 +240,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		excelEntity.setExportImageType(excel.imageType());
 		excelEntity.setExportFormat(
 				StringUtils.isNotEmpty(excel.exportFormat()) ? excel.exportFormat() : excel.imExFormat());
+		excelEntity.setExportOtherFormat(excel.exportOtherFormat());
 		String fieldname = field.getName();
 		excelEntity.setGetMethod(ExcelPublicUtil.getMethod(fieldname, pojoClass));
 		if (excel.exportConvertSign() == 1 || excel.imExConvert() == 1) {
@@ -290,10 +304,10 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			ExcelExportEntity entity = excelParams.get(i);
 			contentCell = contenRow.createCell(i);
 			contentCell.setCellValue(entity.getName());
-			if(entity!=null&&entity.getWidth()==0){
-				sheet.setColumnWidth(i, 10 * 2*256);//默认10个中文字符
-			}else{
-				sheet.setColumnWidth(i, entity.getWidth() * 2*256);//根据注解上设置的宽度进行设置
+			if (entity != null && entity.getWidth() == 0) {
+				sheet.setColumnWidth(i, 10 * 2 * 256);//默认10个中文字符
+			} else {
+				sheet.setColumnWidth(i, entity.getWidth() * 2 * 256);//根据注解上设置的宽度进行设置
 			}
 
 		}

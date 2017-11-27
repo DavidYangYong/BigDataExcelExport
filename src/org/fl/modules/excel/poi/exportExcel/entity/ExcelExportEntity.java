@@ -62,7 +62,17 @@ public class ExcelExportEntity {
 	private List<Method> getMethods;
 	
 	private List<ExcelExportEntity> list;
-	
+
+	private String exportOtherFormat;
+
+	public String getExportOtherFormat() {
+		return exportOtherFormat;
+	}
+
+	public void setExportOtherFormat(String exportOtherFormat) {
+		this.exportOtherFormat = exportOtherFormat;
+	}
+
 	public Map<String, String> getDictMap() {
 		return dictMap;
 	}

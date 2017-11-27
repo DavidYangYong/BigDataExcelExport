@@ -88,6 +88,11 @@ public @interface Excel {
 	 * 导出的时间格式,以这个是否为空来判断是否需要格式化日期
 	 */
 	public String exportFormat() default "";
+
+	/**
+	 * 导出的值进行格式化
+	 */
+	public String exportOtherFormat() default "";
 	
 	/**
 	 * 导入的时间格式,以这个是否为空来判断是否需要格式化日期
