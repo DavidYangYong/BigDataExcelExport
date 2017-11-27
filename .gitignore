@@ -1,5 +1,6 @@
 /.DS_Store
-/target/
+*/target/
+*/target/maven-status/
 .settings
 /bin/
 /doc/

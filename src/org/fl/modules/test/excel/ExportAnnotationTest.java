@@ -22,6 +22,7 @@ public class ExportAnnotationTest {
 			throws IOException, RuntimeException {
 		ExportExcelMultiSupport excelMultiSupport = new ExportExcelMultiSupport();
 		excelMultiSupport.setMulti(false);
+		excelMultiSupport.getSxssfWorkBookOperation().setPageSize(120000);
 		ISXSSFWorkBook isxssfWorkBook=new SXSSFWorkBookImpl(Person.class);
 		excelMultiSupport.run(1000,isxssfWorkBook,new ISxssfWorkBookList() {
 

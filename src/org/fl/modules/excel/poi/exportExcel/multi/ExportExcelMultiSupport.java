@@ -250,6 +250,7 @@ public class ExportExcelMultiSupport {
 	 */
 	public ExportExcelMultiSupport() {
 		isMulti = true;
+		sxssfWorkBookOperation = new SXSSFWorkBookOperation();
 	}
 
 	public SXSSFWorkBookOperation getSxssfWorkBookOperation() {
@@ -270,9 +271,11 @@ public class ExportExcelMultiSupport {
 	 */
 	public boolean run(final int count, final ISXSSFWorkBook sIsxssfWorkBook,
 			final ISxssfWorkBookList sxssfWorkBookList) throws IOException, RuntimeException {
-		logger.info("查询数据开始.....");
-		long start = System.currentTimeMillis();
-		sxssfWorkBookOperation = new SXSSFWorkBookOperation();
+		long start =0;
+		if(logger.isInfoEnabled()) {
+			logger.info("查询数据开始.....");
+			start=System.currentTimeMillis();
+		}
 		sxssfWorkBookOperation.setSxIsxssfWorkBook(sIsxssfWorkBook);
 		boolean isRun = false;
 		if (isMulti) {
@@ -294,12 +297,13 @@ public class ExportExcelMultiSupport {
 			sxssfWorkBookOperation.excute(sIsxssfWorkBook, sxssfWorkBookList.doExecuteList(rowSelect));
 			isRun = true;
 		}
-
-		long end = System.currentTimeMillis();
-		long temp = (end - start) / 1000;
-		logger.info("耗时:" + temp + "秒");
-		logger.info("耗时:" + temp / 60 + "分钟");
-		logger.info("查询数据结束.....");
+		if(logger.isInfoEnabled()) {
+			long end = System.currentTimeMillis();
+			long temp = (end - start) / 1000;
+			logger.info("耗时:" + temp + "秒");
+			logger.info("耗时:" + temp / 60 + "分钟");
+			logger.info("查询数据结束.....");
+		}
 		return isRun;
 	}
 
