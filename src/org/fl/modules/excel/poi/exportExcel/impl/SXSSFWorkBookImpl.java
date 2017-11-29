@@ -45,6 +45,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		sortAllParams(excelParams);
 	}
 
+
 	public void doExecute(Row contenRow, Object object, CellStyle cellStyle) {
 
 		for (int i = 0; i < excelParams.size(); i++) {
@@ -53,29 +54,31 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			try {
 				Object tempValue = getCellValue(excelExportEntity, object);
 				if (tempValue instanceof Integer) {
-					contentCell.setCellValue((Integer) tempValue);
-					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
-						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
-						contentCell.setCellStyle(cellStyle);
-					}
-
+					Integer temp = (Integer) tempValue;
+					contentCell.setCellValue(temp);
+//					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
+//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
+//					} else {
+//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0"));
+//					}
+					contentCell.setCellStyle(contenRow.getSheet().getColumnStyle(i));
 				} else if (tempValue instanceof Double) {
 					contentCell.setCellValue((Double) tempValue);
-					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
-						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
-					} else{
-						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
-					}
-					contentCell.setCellStyle(cellStyle);
-				}else if(tempValue instanceof BigDecimal){
+//					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
+//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
+//					} else {
+//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+//					}
+					contentCell.setCellStyle(contenRow.getSheet().getColumnStyle(i));
+				} else if (tempValue instanceof BigDecimal) {
 					double doubleVal = ((BigDecimal) tempValue).doubleValue();
-					contentCell.setCellValue(doubleVal);
-					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
-						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
-					} else{
-						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
-					}
-					contentCell.setCellStyle(cellStyle);
+//					contentCell.setCellValue(doubleVal);
+//					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
+//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
+//					} else {
+//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+//					}
+					contentCell.setCellStyle(contenRow.getSheet().getColumnStyle(i));
 				} else {
 					contentCell.setCellValue(getValueStr(tempValue));
 
@@ -314,7 +317,13 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			} else {
 				sheet.setColumnWidth(i, entity.getWidth() * 2 * 256);//根据注解上设置的宽度进行设置
 			}
-
+			if (entity != null&&StringUtils.isNotEmpty(entity.getExportOtherFormat())) {
+				CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+				cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(entity.getExportOtherFormat()));
+				sheet.setDefaultColumnStyle(i, cellStyle);
+			}
 		}
+
 	}
 }
+

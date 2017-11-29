@@ -13,7 +13,7 @@ public class Person {
 		this.id = id;
 	}
 
-	@Excel(exportName = "编号",orderNum = "3")
+	@Excel(exportName = "编号",orderNum = "3",exportOtherFormat = "#,##0")
 	private Integer id;
 	@Excel(exportName = "名称", orderNum = "1")
 	private String name;
