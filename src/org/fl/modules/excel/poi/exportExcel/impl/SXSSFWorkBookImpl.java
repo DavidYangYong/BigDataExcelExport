@@ -54,6 +54,11 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 				Object tempValue = getCellValue(excelExportEntity, object);
 				if (tempValue instanceof Integer) {
 					contentCell.setCellValue((Integer) tempValue);
+					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
+						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
+						contentCell.setCellStyle(cellStyle);
+					}
+
 				} else if (tempValue instanceof Double) {
 					contentCell.setCellValue((Double) tempValue);
 					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
