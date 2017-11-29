@@ -140,14 +140,13 @@ public class SXSSFWorkBookOperation {
 			sh = wb.createSheet();
 			
 			sxsWorkBook.doExecuteCreateTitle(sh);
-			CellStyle cellStyle = wb.createCellStyle();
 
 			// 每个SHEET有rowCount ROW
 			for (int rownum = 0; rownum < rowCount; rownum++) {
 				Row row = sh.createRow(rownum + 1);
 				
 				Object object = list.get(rownum);
-				sxsWorkBook.doExecute(row, object,cellStyle);
+				sxsWorkBook.doExecute(row, object,null);
 				
 				// 每当行数达到设置的值就刷新数据到硬盘,以清理内存
 				if (rownum % rowaccess == 0) {
