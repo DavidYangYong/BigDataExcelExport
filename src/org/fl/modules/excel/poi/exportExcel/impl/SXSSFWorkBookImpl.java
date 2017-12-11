@@ -13,8 +13,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.fl.modules.excel.poi.annotation.Excel;
 import org.fl.modules.excel.poi.annotation.ExcelCollection;
 import org.fl.modules.excel.poi.annotation.ExcelTarget;
@@ -56,33 +58,20 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 				if (tempValue instanceof Integer) {
 					Integer temp = (Integer) tempValue;
 					contentCell.setCellValue(temp);
-//					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
-//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
-//					} else {
-//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0"));
-//					}
-					contentCell.setCellStyle(contenRow.getSheet().getColumnStyle(i));
 				} else if (tempValue instanceof Double) {
 					contentCell.setCellValue((Double) tempValue);
-//					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
-//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
-//					} else {
-//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
-//					}
-					contentCell.setCellStyle(contenRow.getSheet().getColumnStyle(i));
 				} else if (tempValue instanceof BigDecimal) {
 					double doubleVal = ((BigDecimal) tempValue).doubleValue();
-//					contentCell.setCellValue(doubleVal);
-//					if (StringUtils.isNotEmpty(excelExportEntity.getExportOtherFormat())) {
-//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(excelExportEntity.getExportOtherFormat()));
-//					} else {
-//						cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
-//					}
-					contentCell.setCellStyle(contenRow.getSheet().getColumnStyle(i));
+					contentCell.setCellValue(doubleVal);
 				} else {
-					contentCell.setCellValue(getValueStr(tempValue));
-
+					if("yyyy-MM-dd".equals(excelExportEntity.getExportOtherFormat())){
+						Date date = org.apache.poi.ss.usermodel.DateUtil.parseYYYYMMDDDate(getValueStr(tempValue));
+						contentCell.setCellValue(date);
+					}else{
+						contentCell.setCellValue(getValueStr(tempValue));
+					}
 				}
+				contentCell.setCellStyle(contenRow.getSheet().getColumnStyle(i));
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -100,20 +89,6 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 	private static Object getCellValue(ExcelExportEntity entity, Object obj) throws Exception {
 		Object value = entity.getGetMethods() != null ? getFieldBySomeMethod(entity.getGetMethods(), obj)
 				: entity.getGetMethod().invoke(obj, new Object[]{});
-		// step 1 判断是不是日期,需不需要格式化
-		if (StringUtils.isNotEmpty(entity.getExportFormat())) {
-			Date temp = null;
-			if (value instanceof String) {
-				SimpleDateFormat format = new SimpleDateFormat(entity.getDatabaseFormat());
-				temp = format.parse(value.toString());
-			} else if (value instanceof Date) {
-				temp = (Date) value;
-			}
-			if (temp != null) {
-				SimpleDateFormat format = new SimpleDateFormat(entity.getExportFormat());
-				value = format.format(temp);
-			}
-		}
 		return value;
 	}
 
@@ -317,13 +292,21 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			} else {
 				sheet.setColumnWidth(i, entity.getWidth() * 2 * 256);//根据注解上设置的宽度进行设置
 			}
-			if (entity != null&&StringUtils.isNotEmpty(entity.getExportOtherFormat())) {
+			if (entity != null && StringUtils.isNotEmpty(entity.getExportOtherFormat())) {
 				CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
-				cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(entity.getExportOtherFormat()));
+				if ("yyyy-MM-dd".equals(entity.getExportOtherFormat())) {
+					DataFormat dataFormat = sheet.getWorkbook().createDataFormat();
+					cellStyle.setDataFormat(dataFormat.getFormat(entity.getExportOtherFormat()));
+				} else {
+					cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(entity.getExportOtherFormat()));
+				}
+
 				sheet.setDefaultColumnStyle(i, cellStyle);
 			}
 		}
 
 	}
+
+
 }
 

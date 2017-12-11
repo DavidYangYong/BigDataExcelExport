@@ -30,6 +30,18 @@ public class Person {
 
 	private Double money;
 
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+	@Excel(exportName = "创建日期", orderNum = "4",exportFormat = "yyyy-MM-dd",exportOtherFormat = "yyyy-MM-dd")
+
+	private String createDate;
+
 	public String getName() {
 		return name;
 	}

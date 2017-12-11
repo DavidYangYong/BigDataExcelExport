@@ -33,18 +33,21 @@ public class ExportAnnotationTest {
 					person.setId(100);
 					person.setName("personTest1");
 					person.setMoney(60000.96);
+					person.setCreateDate("2017-10-11");
 					list.add(person);
 
 					 person = new Person();
 					person.setId(20000);
 					person.setName("personTest2");
 					person.setMoney(50000.96);
+					person.setCreateDate("2017-11-11");
 
 					list.add(person);
 					person = new Person();
 					person.setId(0);
 					person.setName("personTest3");
 					person.setMoney(70000.96);
+					person.setCreateDate("2017-12-11");
 					list.add(person);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
