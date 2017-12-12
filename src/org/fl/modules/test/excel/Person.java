@@ -2,6 +2,7 @@ package org.fl.modules.test.excel;
 
 import java.math.BigDecimal;
 import org.fl.modules.excel.poi.annotation.Excel;
+import org.fl.modules.excel.poi.exportExcel.entity.ExportTypeEnum;
 
 public class Person {
 
@@ -38,9 +39,22 @@ public class Person {
 		this.createDate = createDate;
 	}
 
-	@Excel(exportName = "创建日期", orderNum = "4",exportFormat = "yyyy-MM-dd",exportOtherFormat = "yyyy-MM-dd")
+	@Excel(exportName = "创建日期", orderNum = "4",exportFortmatType = ExportTypeEnum.EXPORT_TYPE_DATE,exportOtherFormat = "yyyy-MM-dd")
 
 	private String createDate;
+
+	public String getCreateDateTime() {
+		return createDateTime;
+	}
+
+	public void setCreateDateTime(String createDateTime) {
+		this.createDateTime = createDateTime;
+	}
+
+	@Excel(exportName = "创建时间", orderNum = "5",exportFortmatType = ExportTypeEnum.EXPORT_TYPE_DATE,exportOtherFormat =
+			"yyyy-MM-dd HH:mm:ss")
+
+	private String createDateTime;
 
 	public String getName() {
 		return name;

@@ -65,6 +65,16 @@ public class ExcelExportEntity {
 
 	private String exportOtherFormat;
 
+private ExportTypeEnum exportFortmatType;
+
+	public ExportTypeEnum getExportFortmatType() {
+		return exportFortmatType;
+	}
+
+	public void setExportFortmatType(ExportTypeEnum exportFortmatType) {
+		this.exportFortmatType = exportFortmatType;
+	}
+
 	public String getExportOtherFormat() {
 		return exportOtherFormat;
 	}

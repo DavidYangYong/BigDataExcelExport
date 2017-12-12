@@ -16,13 +16,13 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.fl.modules.excel.poi.annotation.Excel;
 import org.fl.modules.excel.poi.annotation.ExcelCollection;
 import org.fl.modules.excel.poi.annotation.ExcelTarget;
 import org.fl.modules.excel.poi.exportExcel.ISXSSFWorkBook;
 import org.fl.modules.excel.poi.exportExcel.entity.ComparatorExcelField;
 import org.fl.modules.excel.poi.exportExcel.entity.ExcelExportEntity;
+import org.fl.modules.excel.poi.exportExcel.entity.ExportTypeEnum;
 import org.fl.modules.utils.ExcelPublicUtil;
 
 public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
@@ -64,10 +64,18 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 					double doubleVal = ((BigDecimal) tempValue).doubleValue();
 					contentCell.setCellValue(doubleVal);
 				} else {
-					if("yyyy-MM-dd".equals(excelExportEntity.getExportOtherFormat())){
-						Date date = org.apache.poi.ss.usermodel.DateUtil.parseYYYYMMDDDate(getValueStr(tempValue));
-						contentCell.setCellValue(date);
-					}else{
+					if (ExportTypeEnum.EXPORT_TYPE_DATE.compareTo(excelExportEntity.getExportFortmatType()) == 0
+							&& tempValue != null&&excelExportEntity.getExportOtherFormat()!=null) {
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat(excelExportEntity.getExportOtherFormat());
+							String dateString = getValueStr(tempValue);
+							Date date = sdf.parse(dateString);
+							contentCell.setCellValue(date);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					} else {
 						contentCell.setCellValue(getValueStr(tempValue));
 					}
 				}
@@ -226,6 +234,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		excelEntity.setExportOtherFormat(excel.exportOtherFormat());
 		String fieldname = field.getName();
 		excelEntity.setGetMethod(ExcelPublicUtil.getMethod(fieldname, pojoClass));
+		excelEntity.setExportFortmatType(excel.exportFortmatType());
 		if (excel.exportConvertSign() == 1 || excel.imExConvert() == 1) {
 			StringBuffer getConvertMethodName = new StringBuffer("convertGet");
 			getConvertMethodName.append(fieldname.substring(0, 1).toUpperCase());
@@ -294,7 +303,7 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			}
 			if (entity != null && StringUtils.isNotEmpty(entity.getExportOtherFormat())) {
 				CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
-				if ("yyyy-MM-dd".equals(entity.getExportOtherFormat())) {
+				if (ExportTypeEnum.EXPORT_TYPE_DATE.compareTo(entity.getExportFortmatType()) == 0) {
 					DataFormat dataFormat = sheet.getWorkbook().createDataFormat();
 					cellStyle.setDataFormat(dataFormat.getFormat(entity.getExportOtherFormat()));
 				} else {
