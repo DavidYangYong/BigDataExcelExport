@@ -80,10 +80,11 @@ class CountDownLatchTemplete {
 			throw new NullPointerException(
 					"sxssfWorkBookOperation is not null");
 		}
-		int pageSize = PageSizeUtils.pageSize;
+		int pageSize =0 ;
 		if (sxssfWorkBookOperation.getPageSize() == 0) {
-			sxssfWorkBookOperation.setPageSize(pageSize);
+			sxssfWorkBookOperation.setPageSize(PageSizeUtils.pageSize);
 		}
+		pageSize=sxssfWorkBookOperation.getPageSize();
 		sxssfWorkBookOperation.setTotalRows(totalRows);
 		int pageNo = (totalRows + (pageSize - 1)) / pageSize; // 页数
 		// if (pageNo > PageSizeUtils.pageNo) {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.fl.modules.excel.poi.exportExcel.ISXSSFWorkBook;
@@ -32,7 +33,7 @@ public class ExportTest {
 				
 			}
 			
-			public void doExecute(Row contenRow, Object object) {
+			public void doExecute(Row contenRow, Object object,CellStyle cellStyle) {
 				Person person = (Person) object;
 				Cell contentCell = contenRow.createCell(0);
 				contentCell.setCellValue(person.getName());

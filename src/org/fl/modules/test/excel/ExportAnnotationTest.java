@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -22,6 +23,7 @@ public class ExportAnnotationTest {
 			throws IOException, RuntimeException {
 		ExportExcelMultiSupport excelMultiSupport = new ExportExcelMultiSupport();
 		excelMultiSupport.setMulti(false);
+		excelMultiSupport.getSxssfWorkBookOperation().setPageSize(120000);
 		ISXSSFWorkBook isxssfWorkBook=new SXSSFWorkBookImpl(Person.class);
 		excelMultiSupport.run(1000,isxssfWorkBook,new ISxssfWorkBookList() {
 
@@ -29,12 +31,25 @@ public class ExportAnnotationTest {
 				List list = new ArrayList();
 				try {
 					Person person = new Person();
-					person.setId(1);
+					person.setId(100);
 					person.setName("personTest1");
+					person.setMoney(60000.96);
+			//		person.setCreateDate("2017-10-11");
 					list.add(person);
+
 					 person = new Person();
-					person.setId(2);
+					person.setId(20000);
 					person.setName("personTest2");
+					person.setMoney(50000.96);
+			//		person.setCreateDate("2017-11-11");
+					person.setCreateDateTime("2014-04-24 08:11:59");
+
+					list.add(person);
+					person = new Person();
+					person.setId(0);
+					person.setName("personTest3");
+					person.setMoney(70000.96);
+			//		person.setCreateDate("2017-12-11");
 					list.add(person);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

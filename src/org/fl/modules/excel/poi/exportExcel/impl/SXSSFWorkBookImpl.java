@@ -3,13 +3,17 @@ package org.fl.modules.excel.poi.exportExcel.impl;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.fl.modules.excel.poi.annotation.Excel;
@@ -18,6 +22,7 @@ import org.fl.modules.excel.poi.annotation.ExcelTarget;
 import org.fl.modules.excel.poi.exportExcel.ISXSSFWorkBook;
 import org.fl.modules.excel.poi.exportExcel.entity.ComparatorExcelField;
 import org.fl.modules.excel.poi.exportExcel.entity.ExcelExportEntity;
+import org.fl.modules.excel.poi.exportExcel.entity.ExportTypeEnum;
 import org.fl.modules.utils.ExcelPublicUtil;
 
 public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
@@ -42,20 +47,39 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		sortAllParams(excelParams);
 	}
 
-	public void doExecute(Row contenRow, Object object) {
+
+	public void doExecute(Row contenRow, Object object, CellStyle cellStyle) {
+
 		for (int i = 0; i < excelParams.size(); i++) {
 			ExcelExportEntity excelExportEntity = excelParams.get(i);
 			Cell contentCell = contenRow.createCell(i);
 			try {
 				Object tempValue = getCellValue(excelExportEntity, object);
 				if (tempValue instanceof Integer) {
-					contentCell.setCellValue((Integer) tempValue);
+					Integer temp = (Integer) tempValue;
+					contentCell.setCellValue(temp);
 				} else if (tempValue instanceof Double) {
 					contentCell.setCellValue((Double) tempValue);
+				} else if (tempValue instanceof BigDecimal) {
+					double doubleVal = ((BigDecimal) tempValue).doubleValue();
+					contentCell.setCellValue(doubleVal);
 				} else {
-					contentCell.setCellValue(getValueStr(tempValue));
+					if (ExportTypeEnum.EXPORT_TYPE_DATE.compareTo(excelExportEntity.getExportFortmatType()) == 0
+							&& tempValue != null&&excelExportEntity.getExportOtherFormat()!=null) {
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat(excelExportEntity.getExportOtherFormat());
+							String dateString = getValueStr(tempValue);
+							Date date = sdf.parse(dateString);
+							contentCell.setCellValue(date);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 
+					} else {
+						contentCell.setCellValue(getValueStr(tempValue));
+					}
 				}
+				contentCell.setCellStyle(contenRow.getSheet().getColumnStyle(i));
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -73,20 +97,6 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 	private static Object getCellValue(ExcelExportEntity entity, Object obj) throws Exception {
 		Object value = entity.getGetMethods() != null ? getFieldBySomeMethod(entity.getGetMethods(), obj)
 				: entity.getGetMethod().invoke(obj, new Object[]{});
-		// step 1 判断是不是日期,需不需要格式化
-		if (StringUtils.isNotEmpty(entity.getExportFormat())) {
-			Date temp = null;
-			if (value instanceof String) {
-				SimpleDateFormat format = new SimpleDateFormat(entity.getDatabaseFormat());
-				temp = format.parse(value.toString());
-			} else if (value instanceof Date) {
-				temp = (Date) value;
-			}
-			if (temp != null) {
-				SimpleDateFormat format = new SimpleDateFormat(entity.getExportFormat());
-				value = format.format(temp);
-			}
-		}
 		return value;
 	}
 
@@ -221,8 +231,10 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 		excelEntity.setExportImageType(excel.imageType());
 		excelEntity.setExportFormat(
 				StringUtils.isNotEmpty(excel.exportFormat()) ? excel.exportFormat() : excel.imExFormat());
+		excelEntity.setExportOtherFormat(excel.exportOtherFormat());
 		String fieldname = field.getName();
 		excelEntity.setGetMethod(ExcelPublicUtil.getMethod(fieldname, pojoClass));
+		excelEntity.setExportFortmatType(excel.exportFortmatType());
 		if (excel.exportConvertSign() == 1 || excel.imExConvert() == 1) {
 			StringBuffer getConvertMethodName = new StringBuffer("convertGet");
 			getConvertMethodName.append(fieldname.substring(0, 1).toUpperCase());
@@ -284,8 +296,26 @@ public class SXSSFWorkBookImpl implements ISXSSFWorkBook {
 			ExcelExportEntity entity = excelParams.get(i);
 			contentCell = contenRow.createCell(i);
 			contentCell.setCellValue(entity.getName());
-			sheet.setColumnWidth(i, entity.getWidth() * 300);//根据注解上设置的宽度进行设置
-			//			sheet.autoSizeColumn(i);//不能设置自适应，原因未知，只能在实体对象的注解上进行设置宽度
+			if (entity != null && entity.getWidth() == 0) {
+				sheet.setColumnWidth(i, 10 * 2 * 256);//默认10个中文字符
+			} else {
+				sheet.setColumnWidth(i, entity.getWidth() * 2 * 256);//根据注解上设置的宽度进行设置
+			}
+			if (entity != null && StringUtils.isNotEmpty(entity.getExportOtherFormat())) {
+				CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+				if (ExportTypeEnum.EXPORT_TYPE_DATE.compareTo(entity.getExportFortmatType()) == 0) {
+					DataFormat dataFormat = sheet.getWorkbook().createDataFormat();
+					cellStyle.setDataFormat(dataFormat.getFormat(entity.getExportOtherFormat()));
+				} else {
+					cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat(entity.getExportOtherFormat()));
+				}
+
+				sheet.setDefaultColumnStyle(i, cellStyle);
+			}
 		}
+
 	}
+
+
 }
+

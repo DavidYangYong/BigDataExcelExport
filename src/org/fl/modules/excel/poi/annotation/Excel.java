@@ -4,6 +4,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.security.PrivateKey;
+import org.fl.modules.excel.poi.exportExcel.entity.ExportTypeEnum;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -88,6 +90,11 @@ public @interface Excel {
 	 * 导出的时间格式,以这个是否为空来判断是否需要格式化日期
 	 */
 	public String exportFormat() default "";
+
+	/**
+	 * 导出的值进行格式化
+	 */
+	public String exportOtherFormat() default "";
 	
 	/**
 	 * 导入的时间格式,以这个是否为空来判断是否需要格式化日期
@@ -130,5 +137,7 @@ public @interface Excel {
 	 * 		返回类型： String
 	 */
 	public String dicText() default "";
+
+	public ExportTypeEnum exportFortmatType() default ExportTypeEnum.EXPORT_TYPE_STRING;
 	
 }

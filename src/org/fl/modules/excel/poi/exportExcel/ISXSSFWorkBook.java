@@ -25,6 +25,7 @@
  */
 package org.fl.modules.excel.poi.exportExcel;
 
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -54,7 +55,7 @@ public interface ISXSSFWorkBook {
 	 * @param org
 	 *            .apache.poi.ss.usermodel.Row row
 	 */
-	public void doExecute(Row row, Object object);
+	public void doExecute(Row row, Object object,CellStyle cellStyle);
 	
 	/**
 	 * 执行创建表头的操作
