@@ -1,4 +1,4 @@
-package org.fl;
+package test.java;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-public class Test {
+public class Test3 {
 	
 	// EDB 加密密钥向量
 	private static byte[] iv1 = { (byte) 0x12, (byte) 0x34, (byte) 0x56,
