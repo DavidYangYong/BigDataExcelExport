@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -82,22 +81,22 @@ public class KnapsackTest {
 		System.out.println("最优解【选取的背包】: ");
 		System.out.println(kp.getBestSolution());
 		int num = 0;
+		//
+		for (int i = 0; i < kp.getBestSolution().size(); i++) {
+			Knapsack knapsack = kp.getBestSolution().get(i);
+			num += knapsack.getWeight();
+			System.out.println("knapsack.getWeight:" + knapsack.getWeight());
+			System.out.println("num:" + num);
+		}
+		System.out.println("最优值矩阵：");
+		int[][] bestValues = kp.getBestValues();
+		for (int i = 0; i < bestValues.length; i++) {
+			for (int j = 0; j < bestValues[i].length; j++) {
+				System.out.printf("%-5d", bestValues[i][j]);
+			}
+			System.out.println();
+		}
 		return kp.getBestSolution();
-// for (int i = 0; i < kp.getBestSolution().size(); i++) {
-// Knapsack knapsack = kp.getBestSolution().get(i);
-// num += knapsack.getWeight();
-// System.out.println("knapsack.getWeight:" + knapsack.getWeight());
-// System.out.println("num:" + num);
-// }
-		// System.out.println("最优值矩阵：");
-		// int[][] bestValues = kp.getBestValues();
-// for (int i = 0; i < bestValues.length; i++) {
-// for (int j = 0; j < bestValues[i].length; j++) {
-// System.out.printf("%-5d", bestValues[i][j]);
-// }
-// System.out.println();
-// }
-		
 	}
 	
 // public static void test2() {
